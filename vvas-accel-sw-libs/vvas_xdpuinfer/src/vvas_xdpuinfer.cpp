@@ -111,6 +111,9 @@ extern "C"
 #ifdef ENABLE_PLATENUM
 #include "vvas_xplatenum.hpp"
 #endif
+#ifdef ENABLE_POSEDETECT
+#include "vvas_posedetect.hpp"
+#endif
 
 using namespace cv;
 using namespace std;
@@ -550,6 +553,14 @@ vvas_xinitmodel (vvas_xkpriv * kpriv, int modelclass)
     case VVAS_XCLASS_PLATENUM:
     {
       model = new vvas_xplatenum (kpriv, kpriv->elfname, kpriv->need_preprocess);
+      break;
+    }
+#endif
+#ifdef ENABLE_POSEDETECT
+    case VVAS_XCLASS_POSEDETECT:
+    {
+      model =
+          new vvas_posedetect (kpriv, kpriv->elfname, kpriv->need_preprocess);
       break;
     }
 #endif

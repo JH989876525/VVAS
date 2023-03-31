@@ -37,6 +37,8 @@ G_BEGIN_DECLS
 
 typedef struct _BoundingBox BoundingBox;
 typedef struct _Segmentation Segmentation;
+typedef struct _Pointf Pointf;
+typedef struct _Pose14Pt Pose14Pt;
 typedef struct _GstInferencePrediction GstInferencePrediction;
 
 /**
@@ -77,6 +79,33 @@ struct _Segmentation
 };
 
 /**
+ * Basic pose structure for detection
+ */
+struct _Pointf
+{
+  gdouble x;
+  gdouble y;
+};
+
+struct _Pose14Pt
+{
+  Pointf right_shoulder;
+  Pointf right_elbow;
+  Pointf right_wrist;
+  Pointf left_shoulder;
+  Pointf left_elbow;
+  Pointf left_wrist;
+  Pointf right_hip;
+  Pointf right_knee;
+  Pointf right_ankle;
+  Pointf left_hip;
+  Pointf left_knee;
+  Pointf left_ankle;
+  Pointf head;
+  Pointf neck;
+};
+
+/**
  * GstInferencePrediction:
  * @prediction_id: unique id for this specific prediction
  * @enabled: flag indicating wether or not this prediction should be
@@ -107,6 +136,7 @@ struct _GstInferencePrediction
   gboolean bbox_scaled; /* bbox co-ordinates scaled to root node resolution or not */
   Segmentation segmentation;
   gchar *obj_track_label;
+  Pose14Pt pose14pt;
   /* for future extension */
   void * reserved_1;
   void * reserved_2;

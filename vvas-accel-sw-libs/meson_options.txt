@@ -42,3 +42,5 @@ option('PLATEDETECT', type: 'string', value: '1',
        description: 'Enable disable PLATEDETECT models')
 option('PLATENUM', type: 'string', value: '1',
        description: 'Enable disable PLATENUMBER models')
+option('POSEDETECT', type: 'string', value: '1',
+       description: 'Enable disable POSEDETECT models')

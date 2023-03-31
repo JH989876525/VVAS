@@ -138,6 +138,18 @@ else
   platenum_dep = []
 endif
 
+# ADD POSEDETECT
+if get_option('POSEDETECT') != '0'
+  add_project_arguments('-DENABLE_POSEDETECT', language : 'c')
+  add_project_arguments('-DENABLE_POSEDETECT', language : 'cpp')
+  posedetect_dep = cc.find_library('vitis_ai_library-posedetect')
+  sources += [
+    'src/vvas_posedetect.cpp',
+  ]
+else
+  posedetect_dep = []
+endif
+
 vartutil_dep = cc.find_library('vart-util')
 xnnpp_dep = cc.find_library('vitis_ai_library-xnnpp')
 vitisconfig_dep = cc.find_library('vitis_ai_library-model_config')
@@ -150,7 +162,7 @@ vvas_xdpuinfer = library('vvas_xdpuinfer',
   sources,
   cpp_args : [vvas_accel_sw_libs_args, '-std=c++17'],
   include_directories : [configinc],
-  dependencies : [gstvideo_dep, gst_dep, xrt_dep, jansson_dep, vvasutils_dep, gstvvas_dep, opencv_dep, opencvcore_dep, vartutil_dep, xnnpp_dep, vitisconfig_dep, dputask_dep, classi_dep, yolov3_dep, facedetect_dep, ssd_dep, tfssd_dep, yolov2_dep, segmentation_dep, refinedet_dep, platedetect_dep, platenum_dep],
+  dependencies : [gstvideo_dep, gst_dep, xrt_dep, jansson_dep, vvasutils_dep, gstvvas_dep, opencv_dep, opencvcore_dep, vartutil_dep, xnnpp_dep, vitisconfig_dep, dputask_dep, classi_dep, yolov3_dep, facedetect_dep, ssd_dep, tfssd_dep, yolov2_dep, segmentation_dep, refinedet_dep, platedetect_dep, platenum_dep, posedetect_dep],
   install : true,
 )
 
