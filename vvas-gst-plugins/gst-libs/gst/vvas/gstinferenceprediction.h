@@ -37,6 +37,8 @@ G_BEGIN_DECLS
 
 typedef struct _BoundingBox BoundingBox;
 typedef struct _Segmentation Segmentation;
+typedef struct _Pointf Pointf;
+typedef struct _Feature Feature;
 typedef struct _GstInferencePrediction GstInferencePrediction;
 
 /**
@@ -76,6 +78,55 @@ struct _Segmentation
   GstBuffer *buffer;
 };
 
+struct _Pointf {
+  float x;
+  float y;
+};
+
+/** 
+ * enum feature_type - Enum for holding type of feature
+ * @UNKNOWN_FEATURE: Unknown feature
+ * @FLOAT_FEATURE: Float features
+ * @FIXED_FEATURE: Fixed point features
+ * @LANDMARK: Landmark
+ * @ROADLINE: Roadlines
+ * @ULTRAFAST: Points from Ultrafast model
+ */
+enum feature_type {
+  UNKNOWN_FEATURE = 0,
+  FLOAT_FEATURE,
+  FIXED_FEATURE,
+  LANDMARK,
+  ROADLINE,
+  ULTRAFAST
+};
+
+/**
+ * enum road_line_type - Enum for holding type of road line
+ * @BACKGROUND: Background
+ * @WHITE_DOTTED_LINE: White dotted line
+ * @WHITE_SOLID_LINE:  White solid line
+ * @YELLOW_LINE: Yellow line
+ */
+enum road_line_type {
+  BACKGROUND = 0,
+  WHITE_DOTTED_LINE,
+  WHITE_SOLID_LINE,
+  YELLOW_LINE,
+};
+
+struct _Feature{
+  union {
+    float float_feature[512];
+    int8_t fixed_feature[512];
+    Pointf road_line[512];
+    Pointf landmark[5];
+  };
+  uint32_t line_size;
+  enum feature_type type;
+  enum road_line_type line_type;
+};
+
 /**
  * GstInferencePrediction:
  * @prediction_id: unique id for this specific prediction
@@ -107,6 +158,7 @@ struct _GstInferencePrediction
   gboolean bbox_scaled; /* bbox co-ordinates scaled to root node resolution or not */
   Segmentation segmentation;
   gchar *obj_track_label;
+  Feature feature;
   /* for future extension */
   void * reserved_1;
   void * reserved_2;

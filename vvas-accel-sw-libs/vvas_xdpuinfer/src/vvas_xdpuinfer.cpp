@@ -111,6 +111,9 @@ extern "C"
 #ifdef ENABLE_PLATENUM
 #include "vvas_xplatenum.hpp"
 #endif
+#ifdef ENABLE_ULTRAFAST
+#include "vvas_ultrafast.hpp"
+#endif
 
 using namespace cv;
 using namespace std;
@@ -550,6 +553,13 @@ vvas_xinitmodel (vvas_xkpriv * kpriv, int modelclass)
     case VVAS_XCLASS_PLATENUM:
     {
       model = new vvas_xplatenum (kpriv, kpriv->elfname, kpriv->need_preprocess);
+      break;
+    }
+#endif
+#ifdef ENABLE_ULTRAFAST
+    case VVAS_XCLASS_ULTRAFAST:
+    {
+      model = new vvas_ultrafast (kpriv, kpriv->elfname, kpriv->need_preprocess);
       break;
     }
 #endif

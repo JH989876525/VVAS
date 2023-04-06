@@ -138,6 +138,18 @@ else
   platenum_dep = []
 endif
 
+# ADD ULTRAFAST
+if get_option('ULTRAFAST') != '0'
+  add_project_arguments('-DENABLE_ULTRAFAST', language : 'c')
+  add_project_arguments('-DENABLE_ULTRAFAST', language : 'cpp')
+  ultrafast_dep = cc.find_library('vitis_ai_library-ultrafast')
+  sources += [
+    'src/vvas_ultrafast.cpp',
+  ]
+else
+  ultrafast_dep = []
+endif
+
 vartutil_dep = cc.find_library('vart-util')
 xnnpp_dep = cc.find_library('vitis_ai_library-xnnpp')
 vitisconfig_dep = cc.find_library('vitis_ai_library-model_config')
@@ -150,7 +162,7 @@ vvas_xdpuinfer = library('vvas_xdpuinfer',
   sources,
   cpp_args : [vvas_accel_sw_libs_args, '-std=c++17'],
   include_directories : [configinc],
-  dependencies : [gstvideo_dep, gst_dep, xrt_dep, jansson_dep, vvasutils_dep, gstvvas_dep, opencv_dep, opencvcore_dep, vartutil_dep, xnnpp_dep, vitisconfig_dep, dputask_dep, classi_dep, yolov3_dep, facedetect_dep, ssd_dep, tfssd_dep, yolov2_dep, segmentation_dep, refinedet_dep, platedetect_dep, platenum_dep],
+  dependencies : [gstvideo_dep, gst_dep, xrt_dep, jansson_dep, vvasutils_dep, gstvvas_dep, opencv_dep, opencvcore_dep, vartutil_dep, xnnpp_dep, vitisconfig_dep, dputask_dep, classi_dep, yolov3_dep, facedetect_dep, ssd_dep, tfssd_dep, yolov2_dep, segmentation_dep, refinedet_dep, platedetect_dep, platenum_dep, ultrafast_dep],
   install : true,
 )
 
