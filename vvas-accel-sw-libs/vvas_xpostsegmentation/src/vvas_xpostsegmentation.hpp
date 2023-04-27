@@ -13,7 +13,7 @@
 #include <vector>
 #include <stdio.h>
 #include <string>
-#include <ivas/ivaslogs.h>
+#include <vvas/vvaslogs.h>
 #include <mutex>
 #include "common.hpp"
 #include "../../cm_package/cmpk_ffc.hpp"
