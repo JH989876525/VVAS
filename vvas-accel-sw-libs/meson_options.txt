@@ -18,6 +18,7 @@
 option('vvas_xdpuinfer', type : 'feature', value : 'auto')
 option('vvas_xboundingbox', type : 'feature', value : 'auto')
 option('vvas_xpreprocessor', type : 'feature', value : 'auto')
+option('vvas_xpostsegmentation', type : 'feature', value : 'auto')
 
 # vvas_xdpuinfer Model selection
 option('YOLOV3', type: 'string', value: '1',

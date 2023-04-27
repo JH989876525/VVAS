@@ -155,14 +155,14 @@ pkgconfig = import('pkgconfig')
 
 if host_machine.cpu_family() == 'x86_64'
   # common kernel libraries for PCIe platforms
-  foreach kernel : ['vvas_xdpuinfer', 'vvas_xboundingbox', 'vvas_xpreprocessor']
+  foreach kernel : ['vvas_xdpuinfer', 'vvas_xboundingbox', 'vvas_xpreprocessor', 'vvas_xpostsegmentation']
     if not get_option(kernel).disabled()
       subdir(kernel)
     endif
   endforeach
 elif host_machine.cpu_family() == 'aarch64'
   # common kernel libraries for embedded platforms
-  foreach kernel : ['vvas_xdpuinfer', 'vvas_xboundingbox', 'vvas_xpreprocessor']
+  foreach kernel : ['vvas_xdpuinfer', 'vvas_xboundingbox', 'vvas_xpreprocessor', 'vvas_xpostsegmentation']
     if not get_option(kernel).disabled()
       subdir(kernel)
     endif
