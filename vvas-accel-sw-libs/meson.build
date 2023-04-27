@@ -42,6 +42,7 @@ glib_deps = [dependency('glib-2.0', version : glib_req, fallback: ['glib', 'libg
 vvas_accel_sw_libs_args = ['-DHAVE_CONFIG_H']
 
 configinc = include_directories('.')
+cmpksinc = include_directories('./cm_package')
 
 soversion = 0
 # maintaining compatibility with the previous libtool versioning

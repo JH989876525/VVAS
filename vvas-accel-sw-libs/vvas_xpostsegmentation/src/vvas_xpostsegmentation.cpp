@@ -26,22 +26,22 @@ get_time ()
 }
 
 //检测传递过来的的类的名字有没有匹配的
-int
-vvas_classification_is_allowed (char *cls_name, vvas_xoverlaypriv * kpriv)
-{
-  unsigned int idx;
+// int
+// vvas_classification_is_allowed (char *cls_name, vvas_xoverlaypriv * kpriv)
+// {
+//   unsigned int idx;
 
-  if (cls_name == NULL)
-    return -1;
+//   if (cls_name == NULL)
+//     return -1;
 
-  for (idx = 0;
-      idx < sizeof (kpriv->class_list) / sizeof (kpriv->class_list[0]); idx++) {
-    if (!strcmp (cls_name, kpriv->class_list[idx].class_name)) {
-      return idx;
-    }
-  }
-  return -1;
-}
+//   for (idx = 0;
+//       idx < sizeof (kpriv->class_list) / sizeof (kpriv->class_list[0]); idx++) {
+//     if (!strcmp (cls_name, kpriv->class_list[idx].class_name)) {
+//       return idx;
+//     }
+//   }
+//   return -1;
+// }
 
 //色彩转换
 void
@@ -127,18 +127,19 @@ int drawOverlaySegmentationC1MapYUV(vvas_xoverlaypriv *kpriv, Mat segResult)
         return -1;
     }
 
-    int result_cnt[20]={0};
+    // int result_cnt[20]={0};
 
 
 
-    int chromaImgy,chromaImgx;
+    // int chromaImgy,chromaImgx;
  
     // 原始帧数据 查询位置
     // frameinfo->inframe->props.height
     // frameinfo->inframe->props.width
     // frameinfo->inframe->props.stride
 
-    int x,y, step = 2;
+    // int x,y, step = 2;
+    int x,y;
 
     float yscale,xscale;
     
@@ -148,7 +149,7 @@ int drawOverlaySegmentationC1MapYUV(vvas_xoverlaypriv *kpriv, Mat segResult)
 
 
 
-    int lumaImgy,lumaImgx;
+    // int lumaImgy,lumaImgx;
     int chromay,chromax;
     uint y_converted,x_converted;
     int val;
@@ -349,7 +350,7 @@ int32_t xlnx_kernel_init (VVASKernel *handle)
 {       
     json_t *jconfig = handle->kernel_config;
         // 读取所有需要处理的类
-    json_t *val, *classes = NULL,*karray = NULL;
+    json_t *classes = NULL,*karray = NULL;
 
     vvas_xoverlaypriv *kpriv = (vvas_xoverlaypriv *) calloc (1, sizeof (vvas_xoverlaypriv));
     //初始化
@@ -401,7 +402,7 @@ int32_t xlnx_kernel_init (VVASKernel *handle)
     JsonGet_float(jconfig,&(kpriv->font_size),"font_size",1,kpriv->log_level);
       
     
-    XkprivGetJsonData_int(jconfig,&(kpriv->font_size),"font_size",1,kpriv->log_level);
+    // XkprivGetJsonData_int(jconfig,&(kpriv->font_size),"font_size",1,kpriv->log_level);
 
     XkprivGetJsonData_uint(jconfig,&(kpriv->font),"font",0,kpriv->log_level);
     XkprivGetJsonData_int(jconfig,&(kpriv->line_thickness),"thickness",1,kpriv->log_level);
@@ -415,7 +416,7 @@ int32_t xlnx_kernel_init (VVASKernel *handle)
       karray = json_object_get (jconfig, "label_color");
     if (!karray)
     {
-      LOG_MESSAGE (LOG_LEVEL_ERROR, "failed to find label_color");
+      LOG_MESSAGE (LOG_LEVEL_ERROR, kpriv->log_level, "failed to find label_color");
       return -1;
     } else
     {
@@ -427,11 +428,11 @@ int32_t xlnx_kernel_init (VVASKernel *handle)
 
     karray = json_object_get (jconfig, "classes");
     if (!karray) {
-      LOG_MESSAGE (LOG_LEVEL_ERROR, "failed to find classes labels");
+      LOG_MESSAGE (LOG_LEVEL_ERROR, kpriv->log_level, "failed to find classes labels");
       return -1;
     }
     if (!json_is_array (karray)) {
-      LOG_MESSAGE (LOG_LEVEL_ERROR, "classes is not array type");
+      LOG_MESSAGE (LOG_LEVEL_ERROR, kpriv->log_level, "classes is not array type");
       return -1;
     }
     // 循环读取所有的label
@@ -439,13 +440,13 @@ int32_t xlnx_kernel_init (VVASKernel *handle)
     for (unsigned int index = 0; index < kpriv->classes_count; index++) {
       classes = json_array_get (karray, index);
       if (!classes) {
-        LOG_MESSAGE (LOG_LEVEL_ERROR, "failed to get class object");
+        LOG_MESSAGE (LOG_LEVEL_ERROR, kpriv->log_level, "failed to get class object");
         break;
       }
       int classID;
       XkprivGetJsonData_int(classes,&(classID),"id",-1,kpriv->log_level);
       if(classID >= MAX_ALLOWED_CLASS){
-        LOG_MESSAGE (LOG_LEVEL_WARNING,kpriv->log_level, "reach maximum classnum %d, drop others",MAX_ALLOWED_CLASS);
+        LOG_MESSAGE (LOG_LEVEL_WARNING, kpriv->log_level, "reach maximum classnum %d, drop others",MAX_ALLOWED_CLASS);
         break;
       }    
       kpriv->class_list[classID].class_id = classID;
@@ -476,7 +477,7 @@ int32_t xlnx_kernel_start (VVASKernel *handle, int start /*unused */,
         VVASFrame *input[MAX_NUM_OBJECT], VVASFrame *output[MAX_NUM_OBJECT])
 {
     
-    auto start_time_all = get_time ();
+    // auto start_time_all = get_time ();
     GstInferenceMeta *infer_meta = NULL;
     // 初始化 private 数据
     vvas_xoverlaypriv *kpriv = (vvas_xoverlaypriv *) handle->kernel_priv;
@@ -489,7 +490,7 @@ int32_t xlnx_kernel_start (VVASKernel *handle, int start /*unused */,
     
     LOG_MESSAGE (LOG_LEVEL_DEBUG, kpriv->log_level, "enter");
 
-    static bool segMapEn = false;
+    // static bool segMapEn = false;
     // static Mat lastSegChromaImg;
     // frameinfo->lastSegChromaImg = lastSegChromaImg;
 
@@ -508,11 +509,11 @@ int32_t xlnx_kernel_start (VVASKernel *handle, int start /*unused */,
 
     // 输入的帧数据
     // 如果是 RGB 处理使用
-    char *rgbdata = (char *) frameinfo->inframe->vaddr[0];
+    // char *rgbdata = (char *) frameinfo->inframe->vaddr[0];
     
-    // 如果是 NV12处理使用
-    char *lumaBuf = (char *) frameinfo->inframe->vaddr[0];
-    char *chromaBuf = (char *) frameinfo->inframe->vaddr[1];
+    // // 如果是 NV12处理使用
+    // char *lumaBuf = (char *) frameinfo->inframe->vaddr[0];
+    // char *chromaBuf = (char *) frameinfo->inframe->vaddr[1];
 
     LOG_MESSAGE (LOG_LEVEL_DEBUG, kpriv->log_level, "enter");
 
@@ -532,7 +533,7 @@ int32_t xlnx_kernel_start (VVASKernel *handle, int start /*unused */,
     //提取root predict节点
     GstInferencePrediction *root = infer_meta->prediction;
 
-    bool notfound = true;
+    // bool notfound = true;
     //提取第一层所有的节点
     GSList *tmp = gst_inference_prediction_get_children(root);
     for (GSList *child_predictions = tmp; child_predictions; child_predictions = g_slist_next(child_predictions)){
@@ -576,7 +577,7 @@ int32_t xlnx_kernel_start (VVASKernel *handle, int start /*unused */,
         
         //对结果进行存档
         segResultImg.copyTo(frameinfo->lastSegImg);
-        segMapEn = true;
+        // segMapEn = true;
         
         LOG_MESSAGE (LOG_LEVEL_INFO, kpriv->log_level, "vmeta size info: %d %d",vmeta->height, vmeta->width);
 
@@ -610,7 +611,7 @@ int32_t xlnx_kernel_start (VVASKernel *handle, int start /*unused */,
     
     LOG_MESSAGE (LOG_LEVEL_DEBUG, kpriv->log_level, "enter");
 
-    if(props.fmt == VVAS_VFMT_Y_UV8_420)
+    if(frameinfo->inframe->props.fmt == VVAS_VFMT_Y_UV8_420)
       {
           //行对齐
           frameinfo->lumaImg.create (input[0]->props.height, input[0]->props.stride,CV_8UC1);
@@ -618,15 +619,15 @@ int32_t xlnx_kernel_start (VVASKernel *handle, int start /*unused */,
           frameinfo->chromaImg.create (input[0]->props.height / 2, input[0]->props.stride / 2, CV_16UC1);
           frameinfo->chromaImg.data = (unsigned char *) input[0]->vaddr[1];
           
-          auto start_time = get_time ();
+          // auto start_time = get_time ();
           drawOverlaySegmentationC1MapYUV(kpriv,frameinfo->lastSegImg);
           int segclassRes= classifyScenariosfromSegC1(kpriv,frameinfo->lastSegImg);
 
           fifoComReportNB_segResult(&kpriv->ffc,segclassRes,"segmentation");
 
-          auto end_time = get_time ();
+          // auto end_time = get_time ();
           // 打印时间     
-          LOG_MESSAGE (LOG_LEVEL_INFO, kpriv->log_level, "time cost of draw Seg :%d ms",(end_time - start_time)/1000);
+          // LOG_MESSAGE (LOG_LEVEL_INFO, kpriv->log_level, "time cost of draw Seg :%d ms",(end_time - start_time)/1000);
        
       }
       else
@@ -653,8 +654,8 @@ int32_t xlnx_kernel_start (VVASKernel *handle, int start /*unused */,
 
 
   
-    auto end_time_all = get_time ();
-    LOG_MESSAGE (LOG_LEVEL_INFO, kpriv->log_level, "all time cost:%d",end_time_all - start_time_all);
+    // auto end_time_all = get_time ();
+    // LOG_MESSAGE (LOG_LEVEL_INFO, kpriv->log_level, "all time cost:%d",end_time_all - start_time_all);
          
 
     

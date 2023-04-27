@@ -4,7 +4,7 @@
  * @LastEditTime: 2022-01-28 15:19:53
  * @LastEditors: CatMouse
  * @Description: 
- * @FilePath: /VVAS/ivas-accel-sw-libs/ivas_postsegmentation/src/ivas_postsegmentation.hpp
+ * @FilePath: /VVAS/vvas-accel-sw-libs/vvas_postsegmentation/src/vvas_postsegmentation.hpp
  *  Copyright (c) 2021 CatMouse All rights reserved.
  */
 #ifndef __VVAS_CMPOSTSEG_H__
@@ -43,7 +43,7 @@ struct  yuv_color
 
 
 
-struct ivass_xclassification
+struct vvass_xclassification
 {
   color class_color;
   yuv_color converted_color;
@@ -75,7 +75,7 @@ struct scenario_info
   int x_offset;
 
   // bool en_ffc;
-  // ivas_ffc ffc;
+  // vvas_ffc ffc;
 };
 
 struct vvas_xoverlaypriv
