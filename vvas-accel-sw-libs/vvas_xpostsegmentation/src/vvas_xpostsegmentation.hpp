@@ -1,48 +1,112 @@
 /*
- * Copyright 2020 Xilinx, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * @Author: CatMouse
+ * @Date: 2022-01-08 14:48:01
+ * @LastEditTime: 2022-01-28 15:19:53
+ * @LastEditors: CatMouse
+ * @Description: 
+ * @FilePath: /VVAS/ivas-accel-sw-libs/ivas_postsegmentation/src/ivas_postsegmentation.hpp
+ *  Copyright (c) 2021 CatMouse All rights reserved.
  */
+#ifndef __VVAS_CMPOSTSEG_H__
+#define __VVAS_CMPOSTSEG_H__
 
-#ifndef __VVAS_XBOUNDINGBOX_H__
-#define __VVAS_XBOUNDINGBOX_H__
+#include <vector>
+#include <stdio.h>
+#include <string>
+#include <ivas/ivaslogs.h>
+#include <mutex>
+#include "common.hpp"
+#include "../../cm_package/cmpk_ffc.hpp"
 
-enum
+#define MAX_CLASS_LEN 1024
+#define MAX_LABEL_LEN 1024
+#define MAX_ALLOWED_CLASS 40
+#define MAX_ALLOWED_LABELS 40
+
+using namespace cv;
+using namespace std;
+
+
+struct color
 {
-  LOG_LEVEL_ERROR,
-  LOG_LEVEL_WARNING,
-  LOG_LEVEL_INFO,
-  LOG_LEVEL_DEBUG
+  unsigned int blue;
+  unsigned int green;
+  unsigned int red;
 };
 
-#define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
-#define LOG_MESSAGE(level, ...) {\
-  do {\
-    char *str; \
-    if (level == LOG_LEVEL_ERROR)\
-      str = (char*)"ERROR";\
-    else if (level == LOG_LEVEL_WARNING)\
-      str = (char*)"WARNING";\
-    else if (level == LOG_LEVEL_INFO)\
-      str = (char*)"INFO";\
-    else if (level == LOG_LEVEL_DEBUG)\
-      str = (char*)"DEBUG";\
-    if (level <= log_level) {\
-      printf("[%s %s:%d] %s: ",__FILENAME__, __func__, __LINE__, str);\
-      printf(__VA_ARGS__);\
-      printf("\n");\
-    }\
-  } while (0); \
-}
+struct  yuv_color
+{
+  unsigned char y;
+  unsigned short uv;
+  /* data */
+};
 
-#endif /* __VVAS_XBOUNDINGBOX_H__  */
+
+
+struct ivass_xclassification
+{
+  color class_color;
+  yuv_color converted_color;
+  char class_name[MAX_CLASS_LEN];
+  int class_id;
+};
+
+
+struct overlayframe_info
+{
+  VVASFrame *inframe;
+  Mat image;
+  Mat I420image;
+  Mat NV12image;
+  Mat lumaImg;
+  Mat chromaImg;
+  Mat lastSegImg;
+  int y_offset;
+  int x_offset;
+  bool en_overlay;
+  int width_overlay;
+  int height_overlay;
+};
+
+struct scenario_info
+{
+  bool en_overlay;
+  int y_offset;
+  int x_offset;
+
+  // bool en_ffc;
+  // ivas_ffc ffc;
+};
+
+struct vvas_xoverlaypriv
+{
+  float font_size;
+  unsigned int font;
+  int line_thickness;
+  int y_offset;
+  color label_color;
+  char label_filter[MAX_ALLOWED_LABELS][MAX_LABEL_LEN];
+  unsigned char label_filter_cnt;
+  unsigned short classes_count;
+  vvass_xclassification class_list[MAX_ALLOWED_CLASS];
+  struct overlayframe_info frameinfo;
+
+  int log_level;                /* LOG_LEVEL_ERROR=0, LOG_LEVEL_WARNING=1,
+                                   LOG_LEVEL_INFO=2, LOG_LEVEL_DEBUG=3 */  
+  mutable std::mutex mtx_;
+  scenario_info scenarioinfo;
+
+
+  int debug_param;
+  cmpk::fifocom ffc;
+
+  std::string result_output_file;
+  bool result2file;
+};
+
+
+
+
+
+
+#endif /* __VVAS_CMPOSTSEG_H__  */
