@@ -4,7 +4,7 @@
  * @LastEditTime: 2022-01-28 15:25:26
  * @LastEditors: CatMouse
  * @Description: 
- * @FilePath: /VVAS/ivas-accel-sw-libs/cm_package/cmpk_ffc.hpp
+ * @FilePath: /VVAS/vvas-accel-sw-libs/cm_package/cmpk_ffc.hpp
  * 可以输入预定的版权声明、个性签名、空行等
  */
 #ifndef CMPK_FFC_H

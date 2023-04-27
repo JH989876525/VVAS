@@ -4,7 +4,7 @@
  * @LastEditTime: 2022-01-17 22:49:41
  * @LastEditors: CatMouse
  * @Description: 
- * @FilePath: /VVAS/ivas-accel-sw-libs/cm_package/cmpk_json_utils.hpp
+ * @FilePath: /VVAS/vvas-accel-sw-libs/cm_package/cmpk_json_utils.hpp
  *  Copyright (c) 2021 CatMouse All rights reserved.
  */
 #pragma once
@@ -15,8 +15,8 @@
 #include <cstring>
 #include <string>
 #include <fstream>
-#include <ivas/ivas_kernel.h>
-#include <ivas/ivaslogs.h>
+#include <vvas/vvas_kernel.h>
+#include <vvas/vvaslogs.h>
 
 
 using namespace std;

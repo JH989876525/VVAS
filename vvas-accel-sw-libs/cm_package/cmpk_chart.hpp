@@ -4,7 +4,7 @@
  * @LastEditTime: 2022-02-03 00:41:21
  * @LastEditors: CatMouse
  * @Description: 
- * @FilePath: /VVAS/ivas-accel-sw-libs/cm_package/cmpk_chart.hpp
+ * @FilePath: /VVAS/vvas-accel-sw-libs/cm_package/cmpk_chart.hpp
  *  Copyright (c) 2021 CatMouse All rights reserved.
  */
 #pragma once

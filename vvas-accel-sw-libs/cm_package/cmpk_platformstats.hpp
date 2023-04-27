@@ -4,7 +4,7 @@
  * @LastEditTime: 2022-01-27 20:35:54
  * @LastEditors: CatMouse
  * @Description: 
- * @FilePath: /VVAS/ivas-accel-sw-libs/cm_package/cmpk_platformstats.hpp
+ * @FilePath: /VVAS/vvas-accel-sw-libs/cm_package/cmpk_platformstats.hpp
  *  Copyright (c) 2021 CatMouse All rights reserved.
  */
 
